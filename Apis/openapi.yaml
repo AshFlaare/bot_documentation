@@ -1,0 +1,316 @@
+openapi: 3.0.0
+info:
+  title: A bot for collecting feedback and monitoring service levels API
+  version: 0.0.1
+servers:
+  - url: http://localhost:8000/api/v1/
+    description: Dev server
+paths:
+  /keyboard/create:
+    post:
+      summary: Метод отправки клавиатуры
+      tags:
+        - API's модуля
+      operationId: sendKeyboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KeyboardRequest"
+      responses:
+        '200':
+          description: Успешный ответ с отправленной клавиатурой
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/KeyboardResponse"
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Error"
+  /keyboard/update:
+    post:
+      summary: Метод обновления клавиатуры
+      tags:
+        - API's модуля
+      operationId: updateKeyboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KeyboardRequestUpdate"
+      responses:
+        '200':
+          description: Успешный ответ с отправленной клавиатурой
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Error"
+  /message:
+    post:
+      summary: Метод отправки сообщения
+      tags:
+        - API's модуля
+      operationId: sendMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Message"
+      responses:
+        '200':
+          description: Успешный ответ с отправленной кнопкой клавиатуры
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/EnterButtonKeyboard"
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Error"
+  /keyboard/input:
+    post:
+      summary: Метод отправки выбранной кнопки
+      tags:
+        - API's коннектора
+      operationId: enterKeyboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnterKeyboard"
+      responses:
+        '200':
+          description: Успешный ответ с отправленной кнопкой клавиатуры
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Error"
+  /image:
+    post:
+      summary: Метод отправки изображений
+      tags:
+        - API's коннектора
+      operationId: sendImages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Image"
+      responses:
+        '200':
+          description: Успешный ответ с urls изображений
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/ImageURL"
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Error"
+  /command:
+    post:
+      summary: Метод отправки команды
+      tags:
+        - API's коннектора
+      operationId: sendCommand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Command"
+      responses:
+        '200':
+          description: Успешный ответ отправленной команды
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Error"
+  /user_message:
+    post:
+      summary: Метод отправки сообщения
+      tags:
+        - API's коннектора
+      operationId: sendMessageFromModule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Message"
+      responses:
+        '200':
+          description: Успешный ответ отправленного сообщения
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Error"  
+  
+    
+            
+            
+components:
+  schemas:
+    KeyboardRequest:
+      type: object
+      required:
+        - title
+        - buttons
+        - place_info
+      properties:
+        place_info:
+          $ref: "#/components/schemas/SendPlaceInfoRequest"
+        title:
+          type: string
+          example: "Выбор подразделения"
+        buttons:
+          type: array
+          items: 
+            $ref: "#/components/schemas/Button"
+    KeyboardResponse:
+      type: object
+      required:
+        - title
+        - buttons
+      properties:
+        place_info:
+          $ref: "#/components/schemas/SendPlaceInfoResponse"
+        
+    KeyboardRequestUpdate:
+      type: object
+      required:
+        - title
+        - buttons
+        - place_info
+      properties:
+        place_info:
+          $ref: "#/components/schemas/SendPlaceInfoRequestWithMessage"
+        title:
+          type: string
+          example: "Выбор подразделения"
+        buttons:
+          type: array
+          items: 
+            $ref: "#/components/schemas/Button"
+        
+    Button:
+      type: object
+      properties:
+        text:
+          type: string
+          example: "СТО Димитровский мост"
+    EnterButtonKeyboard:
+      type: object
+      properties:
+        send_place_info:
+          $ref: "#/components/schemas/SendPlaceInfoResponse"
+        button:
+          $ref: "#/components/schemas/Button"
+    SendPlaceInfoRequest:
+      type: object
+      properties:
+        id_dialog:
+          type: integer
+          example: 123
+        id_user:
+          type: string
+          example: 123
+    SendPlaceInfoRequestWithMessage:
+      type: object
+      properties:
+        id_dialog:
+          type: integer
+          example: 123
+        id_user:
+          type: string
+          example: 123    
+        id_message:
+          type: integer
+          example: 123
+
+    SendPlaceInfoResponse:
+      type: object
+      properties:
+        id_dialog:
+          type: integer
+          example: 123
+        id_user:
+          type: string
+          example: 123
+        id_message:
+          type: integer
+          example: 123
+    Message:
+      type: object
+      properties:
+        place:
+          $ref: "#/components/schemas/SendPlaceInfoRequest"
+        text:
+          type: string
+    EnterKeyboard:
+      type: object
+      properties:
+        id_message:
+          type: integer
+          example: 123
+        button:
+          type: string
+          example: "СТО Димитровский мост"
+        place:
+          $ref: "#/components/schemas/SendPlaceInfoResponse"
+    Image:
+      type: object
+      properties:
+        attachments_base64:
+          type: array
+          items:
+            type: string
+            format: byte
+            description: Массив изображений в Base64
+    ImageURL:
+      type: object
+      properties:
+        attachment_urls:
+          type: array
+          items:
+            type: string
+            format: uri
+            example: "https://storage.example.com/images/1.jpg"
+    Command:
+      type: object
+      properties:
+        name:
+          type: string
+          example: start
+
+      
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
