@@ -13,3 +13,15 @@
 ##### Взаимодействие модулей и коннекторов (API):
 [![API Docs](https://img.shields.io/badge/_OpenAPI_-8A2BE2?style=for-the-badge)](https://ashflaare.github.io/bot_documentation/)
 ![Взаимодействие модулей и коннекторов](images/connection_modules_connector_v1.png)
+
+##### Создание клавиатуры:
+![Создание клавиатуры](images/create_keyboard.png)
+
+##### Нажатие на кнопку:
+![Нажатие на кнопку](images/pressing_a_button.png)
+
+##### Создание запроса:
+![Создание запроса](images/create_request.png)
+
+##### Прикрепление изображения:
+![Прикрепление изображения](images/attach_photo1.png)
