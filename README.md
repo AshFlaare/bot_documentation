@@ -24,4 +24,4 @@
 ![Создание запроса](images/create_request.png)
 
 ##### Прикрепление изображения:
-![Прикрепление изображения](images/attach_photo1.png)
+![Прикрепление изображения](images/attach_photo.png)
