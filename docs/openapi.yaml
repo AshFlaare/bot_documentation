@@ -45,7 +45,7 @@ paths:
               $ref: "#/components/schemas/KeyboardRequestUpdate"
       responses:
         '200':
-          description: Успешный ответ с отправленной клавиатурой
+          description: Успешный ответ обновления клавиатуры
         'default':
           description: Все нестандартное
           content:
@@ -70,7 +70,7 @@ paths:
           content:
             application/json:
               schema: 
-                $ref: "#/components/schemas/EnterButtonKeyboard"
+                $ref: "#/components/schemas/SendPlaceInfoRequestWithMessage"
         'default':
           description: Все нестандартное
           content:
@@ -146,7 +146,7 @@ paths:
                 $ref: "#/components/schemas/Error"
   /user_message:
     post:
-      summary: Метод отправки сообщения
+      summary: Метод отправки сообщения от пользователя
       tags:
         - API's коннектора
       operationId: sendMessageFromModule
@@ -174,11 +174,15 @@ components:
     KeyboardRequest:
       type: object
       required:
+        - user_id
         - title
         - buttons
         - place_info
       properties:
-        place_info:
+        user_id:
+          type: string
+          example: 123
+        place:
           $ref: "#/components/schemas/SendPlaceInfoRequest"
         title:
           type: string
@@ -187,23 +191,38 @@ components:
           type: array
           items: 
             $ref: "#/components/schemas/Button"
+          example: 
+            - text: "СТО Димитровский мост"
+            - text: "СТО ДОК"
     KeyboardResponse:
       type: object
       required:
-        - title
-        - buttons
+        - user_id
+        - place
+        - date_time
       properties:
-        place_info:
+        user_id:
+          type: string
+          example: 123
+        place:
           $ref: "#/components/schemas/SendPlaceInfoResponse"
+        date_time:
+              type: string
+              format: date-time
+              example: "2025-01-29T15:00:00+01:00"
         
     KeyboardRequestUpdate:
       type: object
       required:
+        - user_id
         - title
         - buttons
-        - place_info
+        - place
       properties:
-        place_info:
+        user_id:
+          type: string
+          example: 123
+        place:
           $ref: "#/components/schemas/SendPlaceInfoRequestWithMessage"
         title:
           type: string
@@ -212,13 +231,17 @@ components:
           type: array
           items: 
             $ref: "#/components/schemas/Button"
+          example: 
+            - text: "СТО Димитровский мост"
+            - text: "СТО ДОК"
         
     Button:
       type: object
+      required: 
+        - text
       properties:
         text:
           type: string
-          example: "СТО Димитровский мост"
     EnterButtonKeyboard:
       type: object
       properties:
@@ -228,65 +251,98 @@ components:
           $ref: "#/components/schemas/Button"
     SendPlaceInfoRequest:
       type: object
+      required: 
+        - chat_id
       properties:
-        id_dialog:
-          type: integer
-          example: 123
-        id_user:
+        chat_id:
           type: string
           example: 123
+
     SendPlaceInfoRequestWithMessage:
       type: object
+      required: 
+        - user_id
+        - date_time
+        - place
       properties:
-        id_dialog:
-          type: integer
-          example: 123
-        id_user:
-          type: string
-          example: 123    
-        id_message:
-          type: integer
-          example: 123
+        user_id:
+            type: string
+            example: 123
+        place:
+          $ref: "#/components/schemas/SendPlaceInfoResponse"
+        date_time:
+            type: string
+            format: date-time
+            example: "2025-01-29T15:00:00+01:00"
 
     SendPlaceInfoResponse:
       type: object
+      required: 
+        - chat_id
+        - message_id
       properties:
-        id_dialog:
-          type: integer
-          example: 123
-        id_user:
+        chat_id:
           type: string
           example: 123
-        id_message:
-          type: integer
+        message_id:
+          type: string
           example: 123
     Message:
       type: object
+      required: 
+        - user_id
+        - place
+        - text
+        - datetime
       properties:
+        user_id:
+          type: string
+          example: 123
         place:
           $ref: "#/components/schemas/SendPlaceInfoRequest"
         text:
           type: string
+        
     EnterKeyboard:
       type: object
+      required:
+        - user_id
+        - button
+        - place
+        - date_time
       properties:
-        id_message:
-          type: integer
+        user_id:
+          type: string
           example: 123
         button:
           type: string
           example: "СТО Димитровский мост"
         place:
           $ref: "#/components/schemas/SendPlaceInfoResponse"
+        date_time:
+            type: string
+            format: date-time
+            example: "2025-01-29T15:00:00+01:00"
     Image:
       type: object
+      required: 
+        - attachments_base64
       properties:
+        user_id:
+          type: string
+          example: 123
+        place:
+          $ref: "#/components/schemas/SendPlaceInfoRequest"
         attachments_base64:
           type: array
           items:
             type: string
             format: byte
             description: Массив изображений в Base64
+        date_time:
+            type: string
+            format: date-time
+            example: "2025-01-29T15:00:00+01:00"
     ImageURL:
       type: object
       properties:
@@ -298,10 +354,25 @@ components:
             example: "https://storage.example.com/images/1.jpg"
     Command:
       type: object
+      required: 
+        - user_id
+        - place
+        - name
+        - date_time
       properties:
+        user_id:
+          type: string
+          example: 123
+        place:
+          $ref: "#/components/schemas/SendPlaceInfoRequest"
         name:
           type: string
           example: start
+          description: Текст команды
+        date_time:
+              type: string
+              format: date-time
+              example: "2025-01-29T15:00:00+01:00"
 
       
     Error:
