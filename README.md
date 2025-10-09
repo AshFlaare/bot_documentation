@@ -29,7 +29,7 @@
 
 
 ##### Словарь предметной области
-![Таблица из Excel](tables/dictionary.png)
+![Таблица из Excel](tables/dictionary.xlsx)
 
 
 ##### Модели данных
