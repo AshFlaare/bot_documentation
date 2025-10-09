@@ -27,7 +27,13 @@
 ##### Прикрепление изображения:
 ![Прикрепление изображения](images/attach_photo.png)
 
-##### Модели данных
-![Концептуальная модель данных](images/conc_data_model_v1.png)
 
-![ER модель](images/er_diagram1_v1.png)
+##### Словарь предметной области
+![Таблица из Excel](tables/dictionary.png)
+
+
+##### Модели данных
+![Концептуальная модель данных](images/Chen_dia.png)
+
+![ER модель](images/ER-dia.png)
+
