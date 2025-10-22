@@ -89,7 +89,7 @@
 
 
 ##### Модели данных
-![Концептуальная модель данных](images/Chen_dia-v1_3.png)
+![Концептуальная модель данных](images/Chen_dia-v1_4.png)
 
-![ER модель](images/ER-dia-v1_3.png)
+![ER модель](images/ER-dia-v1_4.png)
 
