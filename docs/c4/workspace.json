@@ -1,0 +1,227 @@
+{
+  "configuration" : { },
+  "description" : "описание системы, понятноен психечески здоровым людям",
+  "documentation" : { },
+  "id" : 1,
+  "lastModifiedAgent" : "structurizr-ui",
+  "lastModifiedDate" : "2025-10-27T12:20:26Z",
+  "model" : {
+    "people" : [ {
+      "description" : "Оставляет обращения, присоединяется к существующим проблемам, получает решения через бота",
+      "id" : "3",
+      "location" : "Unspecified",
+      "name" : "Заявитель",
+      "properties" : {
+        "structurizr.dsl.identifier" : "applicantuser"
+      },
+      "relationships" : [ {
+        "description" : "Оставляет/присоединяется к обращениям. Получает решения",
+        "destinationId" : "1",
+        "id" : "6",
+        "sourceId" : "3",
+        "tags" : "Relationship,ASIS"
+      }, {
+        "description" : "save",
+        "destinationId" : "9",
+        "id" : "12",
+        "sourceId" : "3",
+        "tags" : "Relationship,ASIS",
+        "technology" : "API"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Принимает и закрывает обращения, пишет текст решения. Может взаимодействовать с любыми обращениями в системе",
+      "id" : "4",
+      "location" : "Unspecified",
+      "name" : "Работник техподдержки",
+      "properties" : {
+        "structurizr.dsl.identifier" : "supportuser"
+      },
+      "relationships" : [ {
+        "description" : "Управляет обращениями. Закрывает проблемы",
+        "destinationId" : "1",
+        "id" : "7",
+        "sourceId" : "4",
+        "tags" : "Relationship,ASIS"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "containers" : [ {
+        "documentation" : { },
+        "id" : "9",
+        "name" : "Веб приложение",
+        "properties" : {
+          "structurizr.dsl.identifier" : "webapp"
+        },
+        "relationships" : [ {
+          "description" : "save",
+          "destinationId" : "10",
+          "id" : "11",
+          "sourceId" : "9",
+          "tags" : "Relationship,ASIS",
+          "technology" : "API"
+        } ],
+        "tags" : "Element,Container"
+      }, {
+        "documentation" : { },
+        "id" : "10",
+        "name" : "База данных",
+        "properties" : {
+          "structurizr.dsl.identifier" : "database"
+        },
+        "tags" : "Element,Container"
+      } ],
+      "description" : "Бот для сбора и обработки обратной связи. Собирает обращения, управляет процессом заполнения, предоставляет интерфейс для техподдержки, отслеживает SLA и хранит аналитику",
+      "documentation" : { },
+      "id" : "1",
+      "location" : "Unspecified",
+      "name" : "Бот техподдержки",
+      "properties" : {
+        "structurizr.dsl.identifier" : "supportbot"
+      },
+      "relationships" : [ {
+        "description" : "Интеграция через API",
+        "destinationId" : "2",
+        "id" : "8",
+        "sourceId" : "1",
+        "tags" : "Relationship,ASIS",
+        "technology" : "Bot API"
+      } ],
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "Внешняя система мессенджера (Telegram, WhatsApp и др.). Предоставляет API для взаимодействия с ботами",
+      "documentation" : { },
+      "id" : "2",
+      "location" : "Unspecified",
+      "name" : "Мессенджер",
+      "properties" : {
+        "structurizr.dsl.identifier" : "messenger"
+      },
+      "tags" : "Element,Software System"
+    }, {
+      "documentation" : { },
+      "id" : "5",
+      "location" : "Unspecified",
+      "name" : "SupportBot",
+      "properties" : {
+        "structurizr.dsl.identifier" : "0806ece8-6f47-4f0e-92f2-c4e8fd27c97b"
+      },
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "наименование системы",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlIHsNCiAgICBuYW1lICLQvdCw0LjQvNC10L3QvtCy0LDQvdC40LUg0YHQuNGB0YLQtdC80YsiIA0KICAgIGRlc2NyaXB0aW9uICLQvtC/0LjRgdCw0L3QuNC1INGB0LjRgdGC0LXQvNGLLCDQv9C+0L3Rj9GC0L3QvtC10L0g0L/RgdC40YXQtdGH0LXRgdC60Lgg0LfQtNC+0YDQvtCy0YvQvCDQu9GO0LTRj9C8Ig0KICAgIG1vZGVsIHsNCiAgICAgICAgIyDQn9C+0LTQutC70Y7Rh9Cw0LXQvCDQu9Cw0L3QtNGI0LDRhNGCIC0g0YHQv9GA0LDQstC+0YfQvdC40Log0YHQuNGB0YLQtdC8DQogICAgICAgICMg0KHQv9GA0LDQstC+0YfQvdC40Log0YHQuNGB0YLQtdC8DQogICAgICAgIFN1cHBvcnRCb3QgPSBzb2Z0d2FyZVN5c3RlbSAgItCR0L7RgiDRgtC10YXQv9C+0LTQtNC10YDQttC60LgiICLQkdC+0YIg0LTQu9GPINGB0LHQvtGA0LAg0Lgg0L7QsdGA0LDQsdC+0YLQutC4INC+0LHRgNCw0YLQvdC+0Lkg0YHQstGP0LfQuC4g0KHQvtCx0LjRgNCw0LXRgiDQvtCx0YDQsNGJ0LXQvdC40Y8sINGD0L/RgNCw0LLQu9GP0LXRgiDQv9GA0L7RhtC10YHRgdC+0Lwg0LfQsNC/0L7Qu9C90LXQvdC40Y8sINC/0YDQtdC00L7RgdGC0LDQstC70Y/QtdGCINC40L3RgtC10YDRhNC10LnRgSDQtNC70Y8g0YLQtdGF0L/QvtC00LTQtdGA0LbQutC4LCDQvtGC0YHQu9C10LbQuNCy0LDQtdGCIFNMQSDQuCDRhdGA0LDQvdC40YIg0LDQvdCw0LvQuNGC0LjQutGDIiANCiAgICAgICAgTWVzc2VuZ2VyID0gc29mdHdhcmVTeXN0ZW0gItCc0LXRgdGB0LXQvdC00LbQtdGAIiAi0JLQvdC10YjQvdGP0Y8g0YHQuNGB0YLQtdC80LAg0LzQtdGB0YHQtdC90LTQttC10YDQsCAoVGVsZWdyYW0sIFdoYXRzQXBwINC4INC00YAuKS4g0J/RgNC10LTQvtGB0YLQsNCy0LvRj9C10YIgQVBJINC00LvRjyDQstC30LDQuNC80L7QtNC10LnRgdGC0LLQuNGPINGBINCx0L7RgtCw0LzQuCINCiAgICAgICAgIyDQn9C+0LTQutC70Y7Rh9Cw0LXQvCDQutC+0L3RgtC10LrRgdGC0L3Rg9GOINC00LjQsNCz0YDQsNC80LzRgw0KICAgICAgICAjINCc0L7QttC90L4g0LTQu9GPINC90LDQs9C70Y/QtNC90L7RgdGC0Lgg0LTQvtCx0LDQstC40YLRjCDQv9C+0LvRjNC30L7QstCw0YLQtdC70Y8NCiAgICAgICAgQXBwbGljYW50VXNlciA9IHBlcnNvbiAi0JfQsNGP0LLQuNGC0LXQu9GMIiAi0J7RgdGC0LDQstC70Y/QtdGCINC+0LHRgNCw0YnQtdC90LjRjywg0L/RgNC40YHQvtC10LTQuNC90Y/QtdGC0YHRjyDQuiDRgdGD0YnQtdGB0YLQstGD0Y7RidC40Lwg0L/RgNC+0LHQu9C10LzQsNC8LCDQv9C+0LvRg9GH0LDQtdGCINGA0LXRiNC10L3QuNGPINGH0LXRgNC10Lcg0LHQvtGC0LAiDQogICAgICAgIFN1cHBvcnRVc2VyID0gcGVyc29uICLQoNCw0LHQvtGC0L3QuNC6INGC0LXRhdC/0L7QtNC00LXRgNC20LrQuCIgItCf0YDQuNC90LjQvNCw0LXRgiDQuCDQt9Cw0LrRgNGL0LLQsNC10YIg0L7QsdGA0LDRidC10L3QuNGPLCDQv9C40YjQtdGCINGC0LXQutGB0YIg0YDQtdGI0LXQvdC40Y8uINCc0L7QttC10YIg0LLQt9Cw0LjQvNC+0LTQtdC50YHRgtCy0L7QstCw0YLRjCDRgSDQu9GO0LHRi9C80Lgg0L7QsdGA0LDRidC10L3QuNGP0LzQuCDQsiDRgdC40YHRgtC10LzQtSINCiAgICAgICAgc29mdHdhcmVTeXN0ZW0gU3VwcG9ydEJvdCB7DQogICAgICAgICAgICBBcHBsaWNhbnRVc2VyIC0+IFN1cHBvcnRCb3QgItCe0YHRgtCw0LLQu9GP0LXRgi/Qv9GA0LjRgdC+0LXQtNC40L3Rj9C10YLRgdGPINC6INC+0LHRgNCw0YnQtdC90LjRj9C8LiDQn9C+0LvRg9GH0LDQtdGCINGA0LXRiNC10L3QuNGPIiAiIiAiQVNJUyINCiAgICAgICAgICAgIFN1cHBvcnRVc2VyIC0+IFN1cHBvcnRCb3QgItCj0L/RgNCw0LLQu9GP0LXRgiDQvtCx0YDQsNGJ0LXQvdC40Y/QvNC4LiDQl9Cw0LrRgNGL0LLQsNC10YIg0L/RgNC+0LHQu9C10LzRiyIgIiIgIkFTSVMiDQogICAgICAgIA0KICAgICAgICAgICAgU3VwcG9ydEJvdCAtPiBNZXNzZW5nZXIgItCY0L3RgtC10LPRgNCw0YbQuNGPINGH0LXRgNC10LcgQVBJIiAiQm90IEFQSSIgIkFTSVMiDQogICAgICAgIA0KICAgICAgICB9DQogICAgICAgICMg0J/QvtC00LrQu9GO0YfQsNC10Lwg0LrQvtC90YLQtdC50L3QtdGA0L3Rg9GOINC00LjQsNCz0YDQsNC80LzRgw0KICAgICAgICAhZWxlbWVudCBTdXBwb3J0Qm90IHsNCiAgICAgICAgICAgIHdlYmFwcCA9IGNvbnRhaW5lciAi0JLQtdCxINC/0YDQuNC70L7QttC10L3QuNC1IiB7DQogICAgICAgICAgICB9DQogICAgICAgICAgICBkYXRhYmFzZSA9IGNvbnRhaW5lciAi0JHQsNC30LAg0LTQsNC90L3Ri9GFIiB7DQogICAgICAgICAgICB9DQogICAgICAgIH0NCiAgICAgICAgIyDQnNC+0LbQvdC+INC00L7QsdCw0LLQuNGC0Ywg0YHQstGP0LfQuA0KICAgICAgICB3ZWJhcHAgLT4gZGF0YWJhc2UgInNhdmUiICJBUEkiICJBU0lTIg0KICAgICAgICBBcHBsaWNhbnRVc2VyIC0+ICB3ZWJhcHAgInNhdmUiICJBUEkiICJBU0lTDQogICAgfQ0KICAgIHZpZXdzIHsNCiAgICAgICAgIyDQv9C+0LTQutC70Y7Rh9Cw0LXQvCDRgdGC0LjQu9C4DQogICAgICAgIHN0eWxlcyB7DQogICAgICAgICAgICAgICAgICAgIGVsZW1lbnQgIkVsZW1lbnQiIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzExNjhiZA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZg0KICAgICAgICAgICAgICAgICAgICAgICAgc2hhcGUgUm91bmRlZEJveA0KICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgICAgIGVsZW1lbnQgIlBlcnNvbiIgew0KICAgICAgICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjMTE2OGJkDQogICAgICAgICAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmDQogICAgICAgICAgICAgICAgICAgICAgICBzaGFwZSBwZXJzb24NCiAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICByZWxhdGlvbnNoaXAgInN5bmMiIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIGNvbG9yICMwMDAwMDANCiAgICAgICAgICAgICAgICAgICAgICAgIGRhc2hlZCBmYWxzZQ0KICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgICAgIGVsZW1lbnQgIkNvbnRhaW5lciIgew0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZg0KICAgICAgICAgICAgICAgICAgICAgICAgc2hhcGUgUGlwZQ0KICAgICAgICAgICAgICAgICAgICB9ICAgDQogICAgICAgIH0NCiAgICAgICAgc3lzdGVtQ29udGV4dCBTdXBwb3J0Qm90IHsNCiAgICAgICAgICAgIHRpdGxlICLQmtC+0L3RgtC10LrRgdGCIg0KICAgICAgICAgICAgaW5jbHVkZSAqDQogICAgICAgICAgICAjINCw0LLRgtC+INGE0L7RgNC80LDRgtC40YDQvtCy0LDQvdC40LUsINC10YHRgtGMINGA0LDQt9C90YvQtSDQvdCw0YHRgtGA0L7QudC60LgsINC80L7QttC90L4g0L/QvtGB0LzQvtGC0YDQtdGC0Ywg0LIg0LTQvtC60YPQvNC10L3RgtCw0YbQuNC4DQogICAgICAgICAgICBhdXRvTGF5b3V0IGxyDQogICAgICAgICAgICBleGNsdWRlIHJlbGF0aW9uc2hpcC50YWchPUFTSVMNCiAgICAgICAgfQ0KICAgICAgICBjb250YWluZXIgU3VwcG9ydEJvdCB7DQogICAgICAgICAgICB0aXRsZSAi0JrQvtC90YLQtdC50L3QtdGA0YsiDQogICAgICAgICAgICBpbmNsdWRlICoNCiAgICAgICAgICAgIGF1dG9MYXlvdXQgbHINCiAgICAgICAgICAgICMgZXhjbHVkZSByZWxhdGlvbnNoaXAudGFnIT1RMjUgDQogICAgICAgIH0NCiAgICB9DQp9"
+  },
+  "views" : {
+    "configuration" : {
+      "branding" : { },
+      "lastSavedView" : "SystemContext-001",
+      "metadataSymbols" : "SquareBrackets",
+      "styles" : {
+        "elements" : [ {
+          "background" : "#1168bd",
+          "color" : "#ffffff",
+          "shape" : "RoundedBox",
+          "tag" : "Element"
+        }, {
+          "background" : "#1168bd",
+          "color" : "#ffffff",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "color" : "#ffffff",
+          "shape" : "Pipe",
+          "tag" : "Container"
+        } ],
+        "relationships" : [ {
+          "color" : "#000000",
+          "dashed" : false,
+          "tag" : "sync"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "elements" : [ {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "generatedKey" : true,
+      "key" : "Container-001",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "11"
+      }, {
+        "id" : "12"
+      } ],
+      "softwareSystemId" : "1",
+      "title" : "Контейнеры"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "dimensions" : {
+        "height" : 1507,
+        "width" : 2300
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 899,
+        "y" : 565
+      }, {
+        "id" : "2",
+        "x" : 1649,
+        "y" : 565
+      }, {
+        "id" : "3",
+        "x" : 199,
+        "y" : 165
+      }, {
+        "id" : "4",
+        "x" : 199,
+        "y" : 865
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "generatedKey" : true,
+      "key" : "SystemContext-001",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "6"
+      }, {
+        "id" : "7"
+      }, {
+        "id" : "8"
+      } ],
+      "softwareSystemId" : "1",
+      "title" : "Контекст"
+    } ]
+  }
+}
