@@ -7,67 +7,87 @@ workspace {
         
         support = person "Сотрудник техподдержки" "Работник ТП. Принимает и закрывает обращения, пишет решения"
 
-        messenger = softwareSystem "Мессенджер" "Платформа мессенджера (Telegram, VK, ...). Предоставляет API для ботов"
+        tg = softwareSystem "Телеграм" "Cервис обмена сообщениями. Предоставляет интерфейс пользователям и API для ботов" {
+            tags "Messenger"
+        }
+        vk = softwareSystem "Вконтакте" "Cервис обмена сообщениями. Предоставляет интерфейс пользователям и API для ботов" {
+            tags "Messenger"
+        }
         
-        supportBot = softwareSystem "Бот техподдержки" "Бот, с которым взаимодействуют пользователи через мессенджер"
+        supportBotTg = softwareSystem "Бот техподдержки телеграма" "Бот, с которым взаимодействуют пользователи через мессенджер"
+
+        supportBotVk = softwareSystem "Бот техподдержки вконтакте" "Бот, с которым взаимодействуют пользователи через мессенджер"
 
         supportSystem = softwareSystem "Система обратной связи" "Система для хранения и обработки обращений. Аналитика, метрики, workflow" {
             
             connectorMessengers = container "Коннектор для мессенджеров" "Обрабатывает сообщения, поступающие из мессенджеров, и преобразует их в стандартный формат" 
             
-            businessModule = container "Бизнес-логика системы поддержки" "Обрабатывает обращения, применяет правила маршрутизации и workflow"  {
+            businessModule = container "Сервисная логика системы поддержки" "Обрабатывает обращения, применяет правила маршрутизации и workflow"  {
                 routing = component "Слой маршрутизации" "Принимает REST-запросы, определяет маршрут, вызывает нужное действие"
                 middleware = component "Слой middleware" "Обрабатывает запросы до попадания в actions: логирование, аутентификация, валидация, CORS и т.п."
                 actions = component "Слой actions" "Реализует конкретное поведение для маршрутов (бизнес-операции)"
                 service = component "Слой service" "Инкапсулирует бизнес-правила и взаимодействие между сущностями"
-                orm = component "Слой доступа к данным" "Отвечает за работу с базой данных DynamoDB"
+                stateMachineModule  = component "Конечный автомат" "Управляет состояниями диалога с пользователем в процессе создания и обработки обращения" 
             }
-
-            stateMachineModule  = container "Конечный автомат" "Управляет состояниями диалога с пользователем в процессе создания и обработки обращения" 
 
             database = container "База данных" "Хранит обращения, пользователей, статусы и аналитические данные" "DynamoDB" {
                 tags "Database"
             }
         }
 
-        support -> messenger "Управляет обращениями" "Сообщения"
-        applicant -> messenger "Создает и отслеживает обращения" "Сообщения"
+        support -> tg "Управляет обращениями" "Сообщения"
+        applicant -> tg "Создает, присоединяется к обращениям и отслеживает их" "Сообщения"
+        applicant -> vk "Создает, присоединяется к обращениям и отслеживает их" "Сообщения"
 
-        messenger -> supportBot "Передает события" "Bot API"
-        supportBot -> supportSystem "Передает стандартизированные события" "REST API"
+        tg -> supportBotTg "Передает события" "Bot API"
+        vk -> supportBotVk "Передает события" "Bot API"
+        supportBotTg -> supportSystem "Передает стандартизированные события" "REST API"
+        supportBotVk -> supportSystem "Передает стандартизированные события" "REST API"
 
-        supportBot -> connectorMessengers "Передает стандартизированные события" "REST API"
+        supportBotTg -> connectorMessengers "Передает стандартизированные события" "REST API"
+        supportBotVk -> connectorMessengers "Передает стандартизированные события" "REST API"
         connectorMessengers -> businessModule "Передает события" "JSON через HTTP"
-        businessModule -> stateMachineModule "Запрашивает переходы состояний" "Вызовы API автомата"
         businessModule -> database "Сохраняет и извлекает данные" "DynamoDB SDK"
+
+        stateMachineModule -> database "Сохраняет и извлекает состояния диалогов" "DynamoDB SDK"
+        middleware -> database "Сохраняет и извлекает данные" "DynamoDB SDK"
+        stateMachineModule -> connectorMessengers "Возвращает ответы для пользователей" "REST API"
 
         connectorMessengers -> routing "Передает стандартизированные события" "REST API"
         routing -> middleware "Передает HTTP-запрос для предварительной обработки" "Express pipeline"
         middleware -> actions "Передает очищенный и проверенный запрос" "Express handler"
         actions -> service "Вызывает бизнес-логику обработки обращения" "Функциональный вызов"
-        service -> orm "Запрашивает и сохраняет данные" "DynamoDB SDK"
         service -> stateMachineModule "Изменяет состояние обращения" "Вызов API автомата"
-        orm -> database "Выполняет операции чтения/записи" "DynamoDB API"
-    }
 
+        service -> actions "Возвращает результат бизнес-операции" "Response Data"
+        actions -> middleware "Возвращает обработанный ответ" "HTTP Response"
+        middleware -> routing "Возвращает финальный ответ" "HTTP Response"
+        routing -> connectorMessengers "Возвращает ответ для отправки в мессенджер" "REST Response"
+    }
 
     views {
         systemContext supportSystem {
             title "Системный контекст"
-            include applicant support messenger supportBot supportSystem
+            include applicant support tg vk supportBotTg supportBotVk supportSystem
             autoLayout lr
         }
 
         container supportSystem {
             title "Контейнеры"
-            include applicant support messenger supportBot connectorMessengers businessModule stateMachineModule database
+            include supportBotTg supportBotVk connectorMessengers businessModule database
+            include supportBotTg->connectorMessengers
+            include supportBotVk->connectorMessengers
+            include connectorMessengers->businessModule
+            include businessModule->database
+            exclude businessModule->connectorMessengers
+            
             autoLayout lr
         }
 
         component businessModule {
-            title "Компоненты бизнес-логики"
-            include connectorMessengers businessModule routing middleware actions service orm database stateMachineModule
-            autoLayout lr
+            title "Компоненты сервисной логики системы поддержки"
+            include connectorMessengers routing middleware actions service stateMachineModule database
+            //autoLayout lr
         }
         
         styles {
@@ -98,6 +118,10 @@ workspace {
             element "Database" {
                 shape Cylinder
                 background #708090
+                color #ffffff
+            }
+            element "Messenger" {
+                background #847B9C
                 color #ffffff
             }
         }

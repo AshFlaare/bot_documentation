@@ -45,6 +45,11 @@
 [![API Docs](https://img.shields.io/badge/_OpenAPI_-8A2BE2?style=for-the-badge)](https://ashflaare.github.io/bot_documentation/)
 ![Взаимодействие модулей и коннекторов](images/connection_modules_connector_v1.png)
 
+##### Архитектура в нотации C4
+![Контекст](images/c4/structurizr-1-SystemContext-001_v2.png)
+![Контейнеры](images/c4/structurizr-1-Container-001_v2.png)
+![Компоненты](images/c4/structurizr-1-Component-001_v2.png)
+
 ##### Создание клавиатуры:
 ![Создание клавиатуры](images/create_keyboard.png)
 
