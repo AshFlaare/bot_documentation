@@ -51,9 +51,9 @@
 ![Взаимодействие модулей и коннекторов](images/connection_modules_connector_v1.png)
 
 ##### Архитектура в нотации C4
-![Контекст](images/c4/structurizr-1-SystemContext-001_v2.png)
+![Контекст](images/c4/structurizr-1-SystemContext-001_v3.png)
 ![Контейнеры](images/c4/structurizr-1-Container-001_v2.png)
-![Компоненты](images/c4/structurizr-1-Component-001_v2.png)
+![Компоненты](images/c4/structurizr-1-Component-001_v3.png)
 
 ##### Создание клавиатуры:
 ![Создание клавиатуры](images/create_keyboard.png)

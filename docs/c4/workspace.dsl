@@ -18,20 +18,21 @@ workspace {
 
         supportBotVk = softwareSystem "Бот техподдержки вконтакте" "Бот, с которым взаимодействуют пользователи через мессенджер"
 
-        supportSystem = softwareSystem "Система обратной связи" "Система для хранения и обработки обращений. Аналитика, метрики, workflow" {
+        supportSystem = softwareSystem "Система обратной связи" "Система для хранения и обработки обращений" {
             
-            connectorMessengers = container "Коннектор для мессенджеров" "Обрабатывает сообщения, поступающие из мессенджеров, и преобразует их в стандартный формат" 
+            connectorMessengers = container "Коннектор для мессенджеров" "Обрабатывает сообщения, поступающие из мессенджеров, и преобразует их в стандартный формат" "JavaScript" LargeFontSmaller
             
             businessModule = container "Сервисная логика системы поддержки" "Обрабатывает обращения, применяет правила маршрутизации и workflow"  {
-                routing = component "Слой маршрутизации" "Принимает REST-запросы, определяет маршрут, вызывает нужное действие"
-                middleware = component "Слой middleware" "Обрабатывает запросы до попадания в actions: логирование, аутентификация, валидация, CORS и т.п."
-                actions = component "Слой actions" "Реализует конкретное поведение для маршрутов (бизнес-операции)"
-                service = component "Слой service" "Инкапсулирует бизнес-правила и взаимодействие между сущностями"
-                stateMachineModule  = component "Конечный автомат" "Управляет состояниями диалога с пользователем в процессе создания и обработки обращения" 
-            }
+                routing = component "Слой маршрутизации" "Принимает REST-запросы, определяет маршрут, вызывает нужное действие" "Express" LargeFont
+                middleware = component "Слой middleware" "Обрабатывает запросы до попадания в actions: логирование, аутентификация, валидация, CORS и т.п." "Express" LargeFont
+                actions = component "Слой actions" "Реализует конкретное поведение для маршрутов (бизнес-операции)" "Express" LargeFont
+                // service = component "Слой service" "Инкапсулирует бизнес-правила и взаимодействие между сущностями"
+                stateMachineModule  = component "Конечный автомат" "Управляет состояниями диалога с пользователем в процессе создания и обработки обращения" "XState" LargeFont
+                
+            } 
 
             database = container "База данных" "Хранит обращения, пользователей, статусы и аналитические данные" "DynamoDB" {
-                tags "Database"
+                tags "Database", "LargeFont"
             }
         }
 
@@ -39,8 +40,9 @@ workspace {
         applicant -> tg "Создает, присоединяется к обращениям и отслеживает их" "Сообщения"
         applicant -> vk "Создает, присоединяется к обращениям и отслеживает их" "Сообщения"
 
-        tg -> supportBotTg "Передает события" "Bot API"
-        vk -> supportBotVk "Передает события" "Bot API"
+
+        tg -> supportSystem "Передает события" "Bot API"
+        vk -> supportSystem "Передает события" "Bot API"
         supportBotTg -> supportSystem "Передает стандартизированные события" "REST API"
         supportBotVk -> supportSystem "Передает стандартизированные события" "REST API"
 
@@ -49,17 +51,19 @@ workspace {
         connectorMessengers -> businessModule "Передает события" "JSON через HTTP"
         businessModule -> database "Сохраняет и извлекает данные" "DynamoDB SDK"
 
-        stateMachineModule -> database "Сохраняет и извлекает состояния диалогов" "DynamoDB SDK"
-        middleware -> database "Сохраняет и извлекает данные" "DynamoDB SDK"
+        stateMachineModule -> database "Сохраняет и извлекает данные" "DynamoDB SDK"
+        middleware -> database "Сохраняет и извлекает состояния диалогов" "DynamoDB SDK"
         stateMachineModule -> connectorMessengers "Возвращает ответы для пользователей" "REST API"
 
         connectorMessengers -> routing "Передает стандартизированные события" "REST API"
         routing -> middleware "Передает HTTP-запрос для предварительной обработки" "Express pipeline"
         middleware -> actions "Передает очищенный и проверенный запрос" "Express handler"
-        actions -> service "Вызывает бизнес-логику обработки обращения" "Функциональный вызов"
-        service -> stateMachineModule "Изменяет состояние обращения" "Вызов API автомата"
+        actions -> stateMachineModule "Возвращает измененное состояние" "Вызов API автомата"
+        stateMachineModule -> actions "Изменяет состояние обращения" "Функциональный вызов"
+        // actions -> service "Вызывает бизнес-логику обработки обращения" "Функциональный вызов"
+        // service -> stateMachineModule "Изменяет состояние обращения" "Вызов API автомата"
 
-        service -> actions "Возвращает результат бизнес-операции" "Response Data"
+        // service -> actions "Возвращает результат бизнес-операции" "Response Data"
         actions -> middleware "Возвращает обработанный ответ" "HTTP Response"
         middleware -> routing "Возвращает финальный ответ" "HTTP Response"
         routing -> connectorMessengers "Возвращает ответ для отправки в мессенджер" "REST Response"
@@ -68,7 +72,7 @@ workspace {
     views {
         systemContext supportSystem {
             title "Системный контекст"
-            include applicant support tg vk supportBotTg supportBotVk supportSystem
+            include applicant support tg vk supportSystem
             autoLayout lr
         }
 
@@ -86,7 +90,7 @@ workspace {
 
         component businessModule {
             title "Компоненты сервисной логики системы поддержки"
-            include connectorMessengers routing middleware actions service stateMachineModule database
+            include connectorMessengers routing middleware actions stateMachineModule database
             //autoLayout lr
         }
         
@@ -107,10 +111,14 @@ workspace {
             element "Container" {
                 background #385878
                 color #ffffff
+                width 500
+                height 350
             }
             element "Component" {
                 background #566676
                 color #ffffff
+                width 500
+                height 350
             }
             element "Container" {
                 shape RoundedBox
@@ -123,6 +131,18 @@ workspace {
             element "Messenger" {
                 background #847B9C
                 color #ffffff
+            }
+            element "LargeFont" {
+                fontSize 35
+            }
+            element "LargeFontSmaller" {
+                fontSize 32
+            }
+            element "LargeTechnology" {
+                fontSize 28
+            }
+            element "technology" {
+                fontSize 36
             }
         }
     }
