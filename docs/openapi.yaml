@@ -10,7 +10,7 @@ paths:
     post:
       summary: Метод отправки клавиатуры
       tags:
-        - API's модуля (Коннектор вызывает api модуля)
+        - API's модуля (Модуль вызывает api коннектора)
       operationId: sendKeyboard
       requestBody:
         required: true
@@ -35,7 +35,7 @@ paths:
     post:
       summary: Метод обновления клавиатуры
       tags:
-        - API's модуля (Коннектор вызывает api модуля)
+        - API's модуля (Модуль вызывает api коннектора)
       operationId: updateKeyboard
       requestBody:
         required: true
@@ -56,7 +56,7 @@ paths:
     post:
       summary: Метод отправки сообщения
       tags:
-        - API's модуля (Коннектор вызывает api модуля)
+        - API's модуля (Модуль вызывает api коннектора)
       operationId: sendMessage
       requestBody:
         required: true
@@ -81,7 +81,7 @@ paths:
     post:
       summary: Метод отправки выбранной кнопки
       tags:
-        - API's коннектора (Модуль вызывает api коннектора)
+        - API's коннектора (Коннектор вызывает api модуля)
       operationId: enterKeyboard
       requestBody:
         required: true
@@ -102,7 +102,7 @@ paths:
     post:
       summary: Метод отправки изображений
       tags:
-        - API's коннектора (Модуль вызывает api коннектора)
+        - API's коннектора (Коннектор вызывает api модуля)
       operationId: sendImages
       requestBody:
         required: true
@@ -127,7 +127,7 @@ paths:
     post:
       summary: Метод отправки команды
       tags:
-        - API's коннектора (Модуль вызывает api коннектора)
+        - API's коннектора (Коннектор вызывает api модуля)
       operationId: sendCommand
       requestBody:
         required: true
@@ -148,7 +148,7 @@ paths:
     post:
       summary: Метод отправки сообщения от пользователя
       tags:
-        - API's коннектора (Модуль вызывает api коннектора)
+        - API's коннектора (Коннектор вызывает api модуля)
       operationId: sendMessageFromModule
       requestBody:
         required: true
@@ -169,7 +169,7 @@ paths:
     post:
       summary: Метод отправки действия над сообщением
       tags:
-        - API's коннектора (Модуль вызывает api коннектора)
+        - API's коннектора (Коннектор вызывает api модуля)
       operationId: sendActionOnMessage
       requestBody:
         required: true
