@@ -10,7 +10,7 @@ paths:
     post:
       summary: Метод отправки клавиатуры
       tags:
-        - API's модуля
+        - API's модуля (Коннектор вызывает api модуля)
       operationId: sendKeyboard
       requestBody:
         required: true
@@ -35,7 +35,7 @@ paths:
     post:
       summary: Метод обновления клавиатуры
       tags:
-        - API's модуля
+        - API's модуля (Коннектор вызывает api модуля)
       operationId: updateKeyboard
       requestBody:
         required: true
@@ -56,7 +56,7 @@ paths:
     post:
       summary: Метод отправки сообщения
       tags:
-        - API's модуля
+        - API's модуля (Коннектор вызывает api модуля)
       operationId: sendMessage
       requestBody:
         required: true
@@ -81,7 +81,7 @@ paths:
     post:
       summary: Метод отправки выбранной кнопки
       tags:
-        - API's коннектора
+        - API's коннектора (Модуль вызывает api коннектора)
       operationId: enterKeyboard
       requestBody:
         required: true
@@ -102,7 +102,7 @@ paths:
     post:
       summary: Метод отправки изображений
       tags:
-        - API's коннектора
+        - API's коннектора (Модуль вызывает api коннектора)
       operationId: sendImages
       requestBody:
         required: true
@@ -127,7 +127,7 @@ paths:
     post:
       summary: Метод отправки команды
       tags:
-        - API's коннектора
+        - API's коннектора (Модуль вызывает api коннектора)
       operationId: sendCommand
       requestBody:
         required: true
@@ -148,7 +148,7 @@ paths:
     post:
       summary: Метод отправки сообщения от пользователя
       tags:
-        - API's коннектора
+        - API's коннектора (Модуль вызывает api коннектора)
       operationId: sendMessageFromModule
       requestBody:
         required: true
@@ -165,6 +165,27 @@ paths:
             application/json:
               schema: 
                 $ref: "#/components/schemas/Error"  
+  /message/action:
+    post:
+      summary: Метод отправки действия над сообщением
+      tags:
+        - API's коннектора (Модуль вызывает api коннектора)
+      operationId: sendActionOnMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ActionOnMessage"
+      responses:
+        '200':
+          description: Успешный ответ отправки действия над сообщением
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Error"
   
     
             
@@ -373,6 +394,23 @@ components:
               type: string
               format: date-time
               example: "2025-01-29T15:00:00+01:00"
+
+    ActionOnMessage:
+      type: object
+      required: 
+        - user_id
+        - place
+        - action
+        - datetime
+      properties:
+        user_id:
+          type: string
+          example: 123
+        place:
+          $ref: "#/components/schemas/SendPlaceInfoRequest"
+        action:
+          type: string
+          example: read
 
       
     Error:
