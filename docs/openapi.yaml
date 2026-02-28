@@ -186,6 +186,52 @@ paths:
             application/json:
               schema: 
                 $ref: "#/components/schemas/Error"
+
+
+  /appeal-agent:
+    post:
+      tags: 
+        - API's модуля агента
+      summary: Отправить обращение агенту
+      operationId: startAppealProcessing
+      description: Запускает выполнение workflow. Возвращает ID выполнения, по которому позже можно получить результат.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentRequest'
+      responses:
+        '200':
+          description: Workflow выполнен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionResponse'
+
+    get:
+      tags: 
+        - API's модуля агента
+      summary: Получить результат обработки обращения
+      operationId: getAppealResult
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: executionId
+          in: query
+          required: true
+          schema:
+            type: string
+          example: dfq0jc2purufolepkm26-864c04cf-19c6-4b7b-8a0c-da1b846af955
+      responses:
+        '200':
+          description: Результат обработки
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResult'                   
   
     
             
@@ -423,3 +469,90 @@ components:
           type: integer
         message:
           type: string
+
+    ExecutionResponse:
+      type: object
+      properties:
+        executionId:
+          type: string
+          example: "dfq0jc2purufolepkm26-864c04cf-19c6-4b7b-8a0c-da1b846af955"
+    
+    AgentRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: "У меня проблема с ККМ"
+        
+        escalate:
+          type: boolean
+          example: false
+        
+        category:
+          type: string
+          example: "ТехПоддержка"
+        
+        po:
+          type: string
+          example: "ККМ"
+        
+        criticality:
+          type: string
+          example: "проблема"
+        
+        attachments:
+          type: array
+          items:
+            type: string
+          example: ["https://storage.example.com/screen.png"]
+        
+        context:
+          type: array
+          items:
+            $ref: '#/components/schemas/DialogMessage'
+
+    DialogMessage:
+      type: object
+      required:
+        - user_id
+        - content
+
+      properties:
+        user_id:
+          type: string
+          example: "usr_123"
+        
+        content:
+          type: string
+          example: "ККМ не печатает чеки"
+
+    AgentResult:
+      type: object
+      properties:
+        execution:
+          type: object
+          properties:
+            id:
+              type: string
+            workflowId:
+              type: string
+            status:
+              type: string
+              example: "FINISHED"
+            startedAt:
+              type: string
+              format: date-time
+              example: "2026-02-26T23:31:47.641443752Z"
+            duration:
+              type: string
+              example: "2.695087695s"
+        input:
+          $ref: '#/components/schemas/AgentRequest'
+        result:
+          type: object
+          properties:
+            raw_output:
+              type: object
+              example: "{\"output\":{\"Result\":\"Описание проблемы:\\nККМ не печатает чеки\\n\\nКлассификация:\\nКатегория: ТехПоддержка\\nПО: ККМ\\nКритичность: проблема\\nЭскалация: true\"}}"      
