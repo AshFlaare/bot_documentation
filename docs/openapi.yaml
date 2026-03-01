@@ -494,7 +494,7 @@ components:
           type: string
           example: "ТехПоддержка"
         
-        po:
+        software:
           type: string
           example: "ККМ"
         
@@ -502,7 +502,7 @@ components:
           type: string
           example: "проблема"
         
-        attachments:
+        image:
           type: array
           items:
             type: string
