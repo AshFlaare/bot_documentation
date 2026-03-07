@@ -360,7 +360,7 @@ components:
         - user_id
         - place
         - text
-        - datetime
+        - date_time
       properties:
         user_id:
           type: string
@@ -369,6 +369,10 @@ components:
           $ref: "#/components/schemas/SendPlaceInfoRequest"
         text:
           type: string
+        date_time:
+            type: string
+            format: date-time
+            example: "2025-01-29T15:00:00+01:00"
         
     EnterKeyboard:
       type: object
@@ -437,9 +441,9 @@ components:
           example: start
           description: Текст команды
         date_time:
-              type: string
-              format: date-time
-              example: "2025-01-29T15:00:00+01:00"
+          type: string
+          format: date-time
+          example: "2025-01-29T15:00:00+01:00"
 
     ActionOnMessage:
       type: object
@@ -447,7 +451,7 @@ components:
         - user_id
         - place
         - action
-        - datetime
+        - date_time
       properties:
         user_id:
           type: string
@@ -457,6 +461,11 @@ components:
         action:
           type: string
           example: read
+        date_time:
+          type: string
+          format: date-time
+          example: "2025-01-29T15:00:00+01:00"
+
 
       
     Error:
