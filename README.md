@@ -55,6 +55,9 @@
 ![Контейнеры](images/c4/structurizr-1-Container-001_v2.png)
 ![Компоненты](images/c4/structurizr-1-Component-001_v3.png)
 
+##### Машина состояний тех. поддержки
+![Машина состояний](images/dia_machine_state_support.png)
+
 ##### Создание клавиатуры:
 ![Создание клавиатуры](images/create_keyboard.png)
 
