@@ -194,7 +194,7 @@ paths:
         - API's модуля агента
       summary: Отправить обращение агенту
       operationId: startAppealProcessing
-      description: Запускает выполнение workflow. Возвращает ID выполнения, по которому позже можно получить результат.
+      description: Запускает выполнение workflow. Возвращает результат обработки обращения агентом.
       security:
         - bearerAuth: []
       requestBody:
@@ -209,29 +209,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExecutionResponse'
-
-    get:
-      tags: 
-        - API's модуля агента
-      summary: Получить результат обработки обращения
-      operationId: getAppealResult
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: executionId
-          in: query
-          required: true
-          schema:
-            type: string
-          example: dfq0jc2purufolepkm26-864c04cf-19c6-4b7b-8a0c-da1b846af955
-      responses:
-        '200':
-          description: Результат обработки
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgentResult'                   
+                $ref: '#/components/schemas/AgentResponse'                
   
     
             
@@ -486,10 +464,23 @@ components:
           type: string
           example: "dfq0jc2purufolepkm26-864c04cf-19c6-4b7b-8a0c-da1b846af955"
     
+
+    AgentResponse:
+      type: object
+      properties:
+        Result:
+          type: object
+          example: "{\"Описание проблемы:\\nККМ не печатает чеки\\n\\nКлассификация:\\nКатегория: ТехПоддержка\\nПО: ККМ\\nКритичность: проблема\\nЭскалация: true\"}}"
+
+        chatId:
+          type: integer
+          example: 12321  
+    
     AgentRequest:
       type: object
       required:
         - message
+        - chatId
       properties:
         message:
           type: string
@@ -499,6 +490,10 @@ components:
           type: boolean
           example: false
         
+        chatId:
+          type: integer
+          example: 12321
+
         category:
           type: string
           example: "ТехПоддержка"
@@ -526,7 +521,6 @@ components:
       type: object
       required:
         - user_id
-        - content
 
       properties:
         user_id:
@@ -536,32 +530,3 @@ components:
         content:
           type: string
           example: "ККМ не печатает чеки"
-
-    AgentResult:
-      type: object
-      properties:
-        execution:
-          type: object
-          properties:
-            id:
-              type: string
-            workflowId:
-              type: string
-            status:
-              type: string
-              example: "FINISHED"
-            startedAt:
-              type: string
-              format: date-time
-              example: "2026-02-26T23:31:47.641443752Z"
-            duration:
-              type: string
-              example: "2.695087695s"
-        input:
-          $ref: '#/components/schemas/AgentRequest'
-        result:
-          type: object
-          properties:
-            raw_output:
-              type: object
-              example: "{\"output\":{\"Result\":\"Описание проблемы:\\nККМ не печатает чеки\\n\\nКлассификация:\\nКатегория: ТехПоддержка\\nПО: ККМ\\nКритичность: проблема\\nЭскалация: true\"}}"      
