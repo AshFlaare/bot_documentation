@@ -465,68 +465,62 @@ components:
           example: "dfq0jc2purufolepkm26-864c04cf-19c6-4b7b-8a0c-da1b846af955"
     
 
-    AgentResponse:
+    
+AgentResponse:
       type: object
       properties:
-        Result:
+        result:
           type: object
           example: "{\"Описание проблемы:\\nККМ не печатает чеки\\n\\nКлассификация:\\nКатегория: ТехПоддержка\\nПО: ККМ\\nКритичность: проблема\\nЭскалация: true\"}}"
+
+        escalate:
+          type: boolean
+          example: true 
+
+        previous_response_id:
+          type: string
+          example: "d456a879-93ba-4e28-ae71-875cfe70585e"
 
         chatId:
           type: integer
           example: 12321  
     
-    AgentRequest:
-      type: object
-      required:
-        - message
-        - chatId
-      properties:
-        message:
-          type: string
-          example: "У меня проблема с ККМ"
-        
-        escalate:
-          type: boolean
-          example: false
-        
-        chatId:
-          type: integer
-          example: 12321
+AgentRequest:
+  type: object
+  required:
+    - message
+    - chatId
+  properties:
+    message:
+      type: string
+      example: "У меня проблема с ККМ"
+    
+    escalate:
+      type: boolean
+      example: false
+    
+    chatId:
+      type: integer
+      example: 12321
 
-        category:
-          type: string
-          example: "ТехПоддержка"
-        
-        software:
-          type: string
-          example: "ККМ"
-        
-        criticality:
-          type: string
-          example: "проблема"
-        
-        image:
-          type: array
-          items:
-            type: string
-          example: ["https://storage.example.com/screen.png"]
-        
-        context:
-          type: array
-          items:
-            $ref: '#/components/schemas/DialogMessage'
-
-    DialogMessage:
-      type: object
-      required:
-        - user_id
-
-      properties:
-        user_id:
-          type: string
-          example: "usr_123"
-        
-        content:
-          type: string
-          example: "ККМ не печатает чеки"
+    category:
+      type: string
+      example: "ТехПоддержка"
+    
+    software:
+      type: string
+      example: "ККМ"
+    
+    criticality:
+      type: string
+      example: "проблема"
+    
+    image:
+      type: array
+      items:
+        type: string
+      example: ["https://storage.example.com/screen.png&quot;]
+    
+    previous_response_id:
+      type: string
+      example: "d456a879-93ba-4e28-ae71-875cfe70585e"
