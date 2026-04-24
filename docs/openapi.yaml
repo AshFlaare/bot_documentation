@@ -519,7 +519,7 @@ components:
           type: array
           items:
             type: string
-          example: ["https://storage.example.com/screen.png&quot;]
+          example: "https://storage.example.com/screen.png"
         
         previous_response_id:
           type: string
